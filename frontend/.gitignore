@@ -19,6 +19,7 @@ node_modules/
 # ----------------------------------------
 dist/
 dist-ssr/
+build/
 
 # ----------------------------------------
 # Environment files
@@ -49,7 +50,6 @@ uploads/
 .vscode/*
 !.vscode/extensions.json
 .idea/
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
@@ -59,4 +59,5 @@ uploads/
 # ----------------------------------------
 # OS / System files
 # ----------------------------------------
+.DS_Store
 Thumbs.db
