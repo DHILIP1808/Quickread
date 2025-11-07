@@ -33,7 +33,7 @@ app = FastAPI(
 
 origins = [
     "http://localhost:5173",
-    "https://quickread-renk.onrender.com"
+    "https://quickread-876n.onrender.com"
 ]
 # CORS middleware
 app.add_middleware(

@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios';
 import type { UploadResponse, QueryResponse, QueryRequest, Document } from '../types';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'https://quickread-backend.onrender.com';
 
 class ApiService {
   private api: AxiosInstance;
