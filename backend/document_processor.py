@@ -5,7 +5,7 @@ from docx import Document as DocxDocument
 from openpyxl import load_workbook
 
 class DocumentProcessor:
-    """Process various document formats and extract text from memory"""
+    """Process various document formats and extract text from memory (no file storage)"""
     
     @staticmethod
     def process_pdf(file_bytes: bytes) -> str:
@@ -74,26 +74,31 @@ class DocumentProcessor:
             zip_file = io.BytesIO(file_bytes)
             with zipfile.ZipFile(zip_file, 'r') as zip_ref:
                 for file_info in zip_ref.filelist:
+                    # Skip directories
                     if file_info.filename.endswith('/'):
                         continue
                     
-                    file_ext = file_info.filename.lower().split('.')[-1]
+                    # Get file extension
+                    file_ext = file_info.filename.lower().split('.')[-1] if '.' in file_info.filename else ''
                     
                     # Read file content from ZIP
                     file_content = zip_ref.read(file_info.filename)
                     
                     # Process based on extension
-                    if file_ext == 'pdf':
-                        contents[file_info.filename] = DocumentProcessor.process_pdf(file_content)
-                    elif file_ext == 'txt':
-                        contents[file_info.filename] = DocumentProcessor.process_txt(file_content)
-                    elif file_ext == 'docx':
-                        contents[file_info.filename] = DocumentProcessor.process_docx(file_content)
-                    elif file_ext == 'xlsx':
-                        contents[file_info.filename] = DocumentProcessor.process_xlsx(file_content)
-                    else:
-                        # For unsupported formats, store as text representation
-                        contents[file_info.filename] = f"[Unsupported file type: {file_ext}]"
+                    try:
+                        if file_ext == 'pdf':
+                            contents[file_info.filename] = DocumentProcessor.process_pdf(file_content)
+                        elif file_ext == 'txt':
+                            contents[file_info.filename] = DocumentProcessor.process_txt(file_content)
+                        elif file_ext == 'docx':
+                            contents[file_info.filename] = DocumentProcessor.process_docx(file_content)
+                        elif file_ext == 'xlsx':
+                            contents[file_info.filename] = DocumentProcessor.process_xlsx(file_content)
+                        else:
+                            # For unsupported formats, store as text representation
+                            contents[file_info.filename] = f"[Unsupported file type: .{file_ext}]"
+                    except Exception as e:
+                        contents[file_info.filename] = f"[Error processing file: {str(e)}]"
                         
         except Exception as e:
             raise Exception(f"Error processing ZIP: {str(e)}")
